@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marswalk · Explorador 3D</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="first-step.css" />
 
   <script type="importmap">
   {
@@ -215,7 +216,7 @@
       <button id="upload-dem-btn" class="route-btn secondary" type="button" title="Cargar archivo GeoTIFF (.tif) o binario (.f32) en tiempo real">
         📂 Cargar DEM (.tif/.f32)
       </button>
-      <button id="replay-cinematic-btn" class="route-btn secondary" type="button" title="Reproducir cinemática narrativa Tierra -> Marte">
+      <button id="replay-cinematic-btn" class="route-btn secondary" type="button" title="Reproducir Primer paso">
         🎬 Intro
       </button>
       <input id="upload-dem-input" type="file" accept=".tif,.tiff,.f32" hidden />
@@ -376,37 +377,45 @@
     </button>
   </div>
 
-  <!-- Cinemática Inicial Narrativa: De la Tierra a Marte (E1) -->
-  <div id="intro-cinematic" class="intro-cinematic hidden" role="dialog" aria-label="Cinemática de misión Tierra a Marte">
-    <canvas id="cinematic-canvas"></canvas>
-    <div class="cinematic-hud">
-      <div class="cinematic-top-bar">
-        <span id="cinematic-phase" class="cinematic-phase">// ACTO I · TRANSFERENCIA INTERPLANETARIA HOHMANN</span>
-        <span class="cinematic-badge">NASA SPACE APPS · MARSWALK EVA</span>
-      </div>
-
-      <div class="cinematic-bottom-card">
-        <h2 id="cinematic-title" class="cinematic-title">DE LA TIERRA A MARTE · MISIÓN ARES EVA-01</h2>
-        <p id="cinematic-subtitle" class="cinematic-subtitle">
-          Durante décadas, los exploradores robóticos de la NASA cartografiaron un mundo extremo…
-        </p>
-        <div id="cinematic-missions" class="cinematic-missions" data-stage="1">
-          <span class="msn-pill">MGS · MOLA Altimetry</span>
-          <span class="msn-pill">Mars Odyssey · THEMIS</span>
-          <span class="msn-pill">MRO · CTX &amp; CRISM</span>
-          <span class="msn-pill">Mars 2020 · Perseverance &amp; MEDA</span>
-        </div>
-        <div class="cinematic-footer-row">
-          <div class="cinematic-progress-track">
-            <div id="cinematic-progress-fill" class="cinematic-progress-fill"></div>
-          </div>
-          <button id="cinematic-skip-btn" class="cinematic-skip-btn" type="button">
-            Saltar Cinemática ⏭ (Espacio)
-          </button>
-        </div>
-      </div>
+  <!-- Primer paso: the scene behind this accessible overlay is rendered by Three.js. -->
+  <section id="intro-cinematic" class="first-step hidden" role="dialog" aria-modal="true" aria-label="Primer paso: introducción a Marswalk">
+    <header class="intro-top">
+      <div class="intro-brand"><span class="intro-mark" aria-hidden="true"></span>MARSWALK</div>
+      <nav class="intro-tools" aria-label="Controles de la introducción">
+        <button id="intro-sound" type="button" aria-pressed="false">ACTIVAR SONIDO</button>
+        <button id="intro-pause" type="button" aria-pressed="false">PAUSAR</button>
+        <button id="cinematic-skip-btn" type="button">SALTAR INTRO ↗</button>
+      </nav>
+    </header>
+    <div class="intro-locator">
+      <span>SUPERFICIE MARCIANA / EVA 01</span>
+      <strong id="intro-dataset"></strong>
+      <span id="intro-source"></span>
     </div>
-  </div>
+    <div class="intro-copy">
+      <div id="intro-phase" class="intro-eyebrow">01 / EL TRAJE</div>
+      <h1 id="intro-title">Antes de salir.</h1>
+      <p id="intro-subtitle" class="intro-subtitle" aria-live="polite">Una respiración. Un mundo por explorar.</p>
+    </div>
+    <div id="intro-end" class="intro-end" hidden>
+      <div class="intro-eyebrow">PRÓLOGO / PRIMER PASO</div>
+      <h2>MARSWALK</h2>
+      <p>Cada paso es una decisión.</p>
+      <div class="intro-end-actions">
+        <button id="intro-start" class="intro-primary" type="button">INICIAR EVA <span aria-hidden="true">↗</span></button>
+        <button id="intro-map" type="button">EXPLORAR EL MAPA →</button>
+      </div>
+      <small>W A S D · CAMINAR &nbsp; / &nbsp; RATÓN · MIRAR &nbsp; / &nbsp; ESC · MAPA</small>
+      <button id="intro-again" class="intro-replay" type="button">↺ VOLVER A VER PRIMER PASO</button>
+    </div>
+    <footer class="intro-bottom">
+      <div class="intro-bottom-labels"><span>UNA NUEVA PERSPECTIVA. <strong>TU PRÓXIMO PASO.</strong></span><span id="intro-timer" aria-label="Segundos de introducción">00 / 26</span></div>
+      <div class="intro-track"><div id="intro-progress"></div></div>
+      <div class="intro-chapters" aria-hidden="true"><span>01 TRAJE</span><span>02 PREPARACIÓN</span><span>03 ESCLUSA</span><span>04 CONTACTO</span><span>05 EXPLORACIÓN</span><span>06 MISIÓN</span></div>
+    </footer>
+    <div id="intro-curtain" aria-hidden="true"></div>
+  </section>
+  <p id="intro-feedback" class="intro-feedback" role="alert" hidden></p>
 
   <!-- Modal de Configuración de API Key para Llama / Groq -->
   <div id="copilot-modal" class="copilot-modal hidden" role="dialog" aria-label="Configuración de ARES-AI">

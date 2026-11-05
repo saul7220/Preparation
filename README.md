@@ -58,3 +58,25 @@ python3 data_pipeline/validate_contracts.py
 - **Entrar:** Doble clic sobre el marcador del astronauta (o botón **«Entrar en 1ª persona»** del popup).
 - **Movimiento:** `W` `A` `S` `D` o flechas para caminar ($1.2\text{ m/s}$), `Shift` para correr ($2.5\text{ m/s}$), `Espacio` para saltar ($g = 3.71\text{ m/s}^2$), `Esc` para volver a la vista orbital.
 - **HUD EVA en tiempo real:** Reserva y flujo metabólico de $\text{O}_2$ según pendiente e inclinación de marcha, alerta de pendiente crítica ($> 25^\circ$), pulso cardíaco, brújula y mini-radar topográfico de $2 \times 2\text{ km}$ con ruta y POIs cercanos.
+
+
+## Primer paso — introducción EVA
+
+La entrada principal incluye una secuencia 3D original de 26 segundos: visor, revisión de muñeca, apertura de esclusa, contacto de la bota, plano exterior y entrada al visor EVA. Es animación en tiempo real, sin descarga de video ni modelos externos. El traje articulado y la escenografía son procedurales; el relieve se muestrea del DEM cargado. Los detalles de polvo, rocas y esclusa son representación artística de una simulación.
+
+- `?dataset=jezero_test&intro=1`: reproduce el prólogo completo.
+- `?dataset=synth_crater&intro=1`: misma introducción sobre el dataset sintético.
+- `?nointro=1`: acceso directo al mapa.
+- Tras verlo o saltarlo, las siguientes visitas de la sesión muestran la entrada breve. «Intro» y «Volver a ver» repiten la secuencia.
+- «Activar sonido» habilita ambiente sintetizado y voz española del navegador cuando está disponible; los subtítulos siempre están presentes.
+- Espacio pausa o continúa; Escape y «Saltar intro» vuelven al mapa. «Iniciar EVA» solicita el control del ratón mediante un clic explícito.
+- La preferencia del sistema de reducir movimiento abre directamente la pantalla de entrada. El escenario no consume O2 durante el prólogo.
+- Se mantienen los controles de escritorio de Marswalk; la introducción se adapta a pantallas estrechas, pero esto no añade locomoción táctil al simulador.
+
+La implementación principal está en la raíz. La carpeta `Semana 1/` conserva la versión histórica de la aplicación.
+
+### Verificación de esta versión (2026-11-04)
+
+Se verificaron la secuencia completa con Jezero, la pausa/continuación, la pantalla final y la repetición desde el mapa en el navegador integrado de Codex. La escena no produjo errores de WebGL en esas comprobaciones. Los siete módulos JavaScript afectados pasan `node --check` y el diff pasa `git diff --check`.
+
+El navegador integrado rechazó Pointer Lock al pulsar «Iniciar EVA»; se verificó el retorno al mapa con un aviso para reintentar. La navegación EVA con ratón requiere validación en un navegador de escritorio que permita esa API. No se han medido FPS ni validado todavía el dataset sintético, dispositivos móviles, lectores de pantalla o todas las voces del sistema. Esta versión usa un astronauta estilizado procedural; no incluye un modelo humano fotorrealista ni un video prerenderizado.
