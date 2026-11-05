@@ -8,7 +8,7 @@ import { initAstronaut, spawnAstronaut } from './astronaut.js';
 import { initPopup, tickPopup } from './popup.js';
 import { initControls, updateControls } from './controls.js';
 import { benchmarkGroundSampling } from './raycast.js';
-import { initIntroCinematic, initRealtimeDemLoader } from './cinematic.js';
+import { initIntroCinematic, initRealtimeDemLoader, isIntroCinematicActive, tickIntroCinematic } from './cinematic.js';
 import { tickArtifactsAnimation } from './artifacts3d.js';
 import { initCopilotUI } from './copilot.js';
 
@@ -43,7 +43,14 @@ const clock = new THREE.Clock();
 
 function animate() {
   requestAnimationFrame(animate);
-  const dt = Math.min(clock.getDelta(), 0.05);
+  const frameDelta_s = clock.getDelta();
+  const dt = Math.min(frameDelta_s, 0.05);
+
+  if (isIntroCinematicActive()) {
+    tickIntroCinematic(frameDelta_s);
+    renderer.render(scene, camera);
+    return;
+  }
 
   if (stars) stars.rotation.y += 0.015 * dt;
 
